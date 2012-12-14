@@ -1,0 +1,872 @@
+$desktop-view: 1240px;
+
+// This import applies a global reset to any page that imports this stylesheet.
+@import "blueprint/reset";
+
+// To configure blueprint, edit the partials/base.sass file.
+@import "partials/base";
+
+// Import all the default blueprint modules so that we can access their mixins.
+@import "blueprint";
+
+// Import the non-default scaffolding module.
+@import "blueprint/scaffolding";
+
+// Import CSS3 modules
+@import "compass/css3/box-shadow";
+@import "compass/css3/box-sizing";
+@import "compass/css3/border-radius";
+@import "compass/css3/images";
+@import "compass/css3/transition";
+
+@font-face {
+    font-family: 'maven_pro_light_100regular';
+    src: url('../fonts/mavenprolight-100-webfont.eot');
+    src: url('../fonts/mavenprolight-100-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/mavenprolight-100-webfont.woff') format('woff'),
+         url('../fonts/mavenprolight-100-webfont.ttf') format('truetype'),
+         url('../fonts/mavenprolight-100-webfont.svg#maven_pro_light_100regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'maven_pro_light_200regular';
+    src: url('../fonts/mavenprolight-200-webfont.eot');
+    src: url('../fonts/mavenprolight-200-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/mavenprolight-200-webfont.woff') format('woff'),
+         url('../fonts/mavenprolight-200-webfont.ttf') format('truetype'),
+         url('../fonts/mavenprolight-200-webfont.svg#maven_pro_light_200regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'maven_pro_light_300regular';
+    src: url('../fonts/mavenprolight-300-webfont.eot');
+    src: url('../fonts/mavenprolight-300-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/mavenprolight-300-webfont.woff') format('woff'),
+         url('../fonts/mavenprolight-300-webfont.ttf') format('truetype'),
+         url('../fonts/mavenprolight-300-webfont.svg#maven_pro_light_300regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* GLOBALS */
+html {
+  height: 100%;
+}
+
+body {
+  background: url('../img/bgnoise.png');
+  color: #fff;
+  // color: #8a8d8c;
+  //font-family: "maven_pro_light_200regular", sans-serif;
+  font-family: "Verdana", sans-serif;
+  font-size: 16px;
+  height: 100%;
+}
+
+.page-title {
+  color: #48556e;
+  font-family: "Arial", sans-serif;
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.clearer {
+  clear: both;
+}
+
+.button {
+  @include border-radius(2px);
+  @include single-box-shadow(#ddd, 2px, 2px, 1px, 0px);
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 46%, rgba(246,246,246,1) 51%, rgba(246,246,246,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(46%,rgba(255,255,255,1)), color-stop(51%,rgba(246,246,246,1)), color-stop(100%,rgba(246,246,246,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 46%,rgba(246,246,246,1) 51%,rgba(246,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 46%,rgba(246,246,246,1) 51%,rgba(246,246,246,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 46%,rgba(246,246,246,1) 51%,rgba(246,246,246,1) 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 46%,rgba(246,246,246,1) 51%,rgba(246,246,246,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+
+  border: 1px solid #999;
+  color: #777;
+  font-weight: bold;
+  margin: 0;
+  min-width: 100px;
+  padding: 7px 10px;
+  text-shadow: 0 1px 0 #fff;
+
+  &:hover {
+    background: rgb(246,246,246); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(246,246,246,1) 0%, rgba(246,246,246,1) 46%, rgba(236,236,236,1) 51%, rgba(236,236,236,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(246,246,246,1)), color-stop(46%,rgba(246,246,246,1)), color-stop(51%,rgba(236,236,236,1)), color-stop(100%,rgba(236,236,236,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(246,246,246,1) 0%,rgba(246,246,246,1) 46%,rgba(236,236,236,1) 51%,rgba(236,236,236,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(246,246,246,1) 0%,rgba(246,246,246,1) 46%,rgba(236,236,236,1) 51%,rgba(236,236,236,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(246,246,246,1) 0%,rgba(246,246,246,1) 46%,rgba(236,236,236,1) 51%,rgba(236,236,236,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(246,246,246,1) 0%,rgba(246,246,246,1) 46%,rgba(236,236,236,1) 51%,rgba(236,236,236,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#ececec',GradientType=0 ); /* IE6-9 */
+    cursor: pointer;
+  }
+
+  &:active {
+    background: rgb(195,195,195); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(195,195,195,1) 0%, rgba(195,195,195,1) 50%, rgba(203,203,203,1) 51%, rgba(203,203,203,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(195,195,195,1)), color-stop(50%,rgba(195,195,195,1)), color-stop(51%,rgba(203,203,203,1)), color-stop(100%,rgba(203,203,203,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(195,195,195,1) 0%,rgba(195,195,195,1) 50%,rgba(203,203,203,1) 51%,rgba(203,203,203,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(195,195,195,1) 0%,rgba(195,195,195,1) 50%,rgba(203,203,203,1) 51%,rgba(203,203,203,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(195,195,195,1) 0%,rgba(195,195,195,1) 50%,rgba(203,203,203,1) 51%,rgba(203,203,203,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(195,195,195,1) 0%,rgba(195,195,195,1) 50%,rgba(203,203,203,1) 51%,rgba(203,203,203,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c3c3c3', endColorstr='#cbcbcb',GradientType=0 ); /* IE6-9 */
+  }
+}
+
+.system-message {
+  //@include border-radius(2px);
+  //@include single-box-shadow(#ccc, 0, 0, 7px, 0px);
+
+  background: #fff;
+  //border: 4px solid rgba(0, 0, 0, 0.2);
+  display: none;
+  //left: 50%;
+  //margin-left: -200px;
+  padding: 10px;
+  //position: absolute;
+  //top: 50px;
+  //width: 400px;
+  width: 100%;
+  text-align: center;
+
+  &.success {
+    color: #03c40c;
+    .message { background: url('../img/message-success-icon.png') left center no-repeat; }
+  }
+
+  &.error {
+    color: #c13434;
+    .message { background: url('../img/message-success-error.png') left center no-repeat; }
+  }
+
+  .message {
+    font-family: "Lucida Grande", "Verdana", sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    height: 16px;
+    line-height: 18px;
+    padding-left: 26px;
+  }
+
+}
+
+
+
+
+
+/* NON-GLOBALS */
+.page-wrapper {
+  height: 100%;
+}
+
+.page-header-container {
+  @include single-box-shadow(#666, 0, 0, 7px, 3px);
+  background: rgba(202, 200, 200, 0.5);
+  border-bottom: 1px solid #666;
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.page-header {
+  @include container;
+}
+
+.page-header {
+  height: 32px;
+}
+
+.logo-container {
+  @include column(2);
+
+  .patchwork-logo {
+    height: 25px;
+    margin-top: 2px;
+  }
+}
+
+.primary-navigation-container {
+  @include column(22, true);
+
+  ul {
+    display: inline-block;
+    float: right;
+
+    li {
+      border-right: 1px solid rgb(183, 187, 188);
+      display: block;
+      float: left;
+      height: 32px;
+      line-height: 32px;
+
+      &:first-child {
+        border-left: 1px solid rgb(183, 187, 188);
+      }
+
+      &.current-menu-item a, &.current-menu-item a:hover {
+        background: rgba(160, 160, 160, 0.5);
+      }
+
+      a {
+        background: rgba(186, 184, 184, 0.5);
+        color: #8a8c8d;
+        display: block;
+        font-family: Arial, sans-serif;
+        font-size: 0.7em;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 15px;
+        text-decoration: none;
+        text-transform: uppercase;
+
+        &:hover {
+          background: rgba(170, 170, 170, 0.5);
+        }
+      }
+    }
+  }
+}
+
+.container {
+  height: 100%;
+}
+
+.generator-page-title {
+  @extend .page-title;
+
+  margin: 0 auto 10px;
+  width: span(24);
+}
+
+.update-generator {
+  @include container;
+  @include single-box-shadow(#ccc, 0, 0, 7px, 2px);
+
+  background: #fff;
+  height: 80%;
+  margin-bottom: 50px;
+}
+
+.more-wrapper {
+  @include column(12, true);
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  z-index: 999;
+
+  // Hide everything but the tab
+  .more-container {
+    display: none;
+  }
+
+  .more-container.visible {
+    display: block;
+  }
+
+  &:hover {
+    top: auto;
+    bottom: 0;
+  }
+
+  .more-tab {
+    @include column(3, true);
+    background: rgba(0, 0, 0, 0.8);
+    margin-left: span(9) + $blueprint-grid-margin;
+    margin-bottom: 1px;
+    padding: 3px 0;
+  }
+
+  .brand-dna, .brand-persona {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .brand-dna { 
+    @include box-sizing(border-box);
+    @include column(6);
+    padding: 5px;
+  }
+
+  .brand-persona { 
+    @include box-sizing(border-box);
+    @include column(6, true);
+    padding: 5px;
+
+    .persona-container {
+      background: #fff;
+      padding: 2px;
+    }
+
+    .persona-header {
+      margin-bottom: 5px;
+      overflow: hidden;
+      width: 100%;
+
+      .persona-name {
+        color: #fff;
+        font-size: 12px;
+        padding: 3px 0;
+      }
+
+      .persona-text {
+        font-size: 12px;
+        padding-left: 75px;
+        text-align: left;
+      }
+    }
+
+    .persona-image {
+      float: left;
+      height: 70px;
+      width: 70px;
+    }
+
+    .persona-name {
+      font-size: 11px;
+      text-align: left;
+    }
+
+    .persona-updates {
+      @include box-sizing(border-box);
+      background: #fff;
+      border: 1px solid #ccc;
+      color: #000;
+      font-family: "Lucida Grande", sans-serif;
+      font-size: 11px;
+
+      .persona-update {
+        border-top: 1px solid #e9e9e9;
+        overflow: hidden;
+        margin-bottom: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+        text-align: left;
+
+        &:first-child {
+          border-top: none;
+        }
+
+        .update-persona-name {
+          color: #3B5998;
+          font-weight: bold;
+          padding-left: 55px;
+        }
+
+        .persona-image {
+          float: left;
+          height: 45px;
+          width: 45px;
+        }
+
+        .update-persona-text {
+          padding-left: 55px;
+        }
+      }
+
+
+    }
+  }
+
+}
+
+.inspiration-container {
+  @include column(16);
+  background: #000;
+  display: table-cell;
+  height: 100%;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+
+  .refresh-inspiration-content {
+    @include border-radius(2px);
+    background: url("../img/refresh-white.png") 5px center no-repeat rgba(0, 0, 0, 0.7);
+    color: #fff;
+    display: block;
+    font-family: "Verdana", "Lucida Grande", sans-serif;
+    font-size: 11px;
+    left: 5px;
+    position: absolute;
+    text-decoration: none;
+    top: 5px;
+    padding: 5px 5px 5px 20px;
+
+    &:hover { background-color: rgba(50, 50, 50, 0.7); }
+  }
+
+  .inspiration-word {
+    @include border-radius(2px);
+    background: rgba(50, 50, 50, 0.7);
+    font-size: 12px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 998; // This is necessary as the inspiration words are draggable
+
+    &:hover {
+      cursor: move;
+    }
+
+    &#say-word {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+    }
+
+    &#do-word {
+      position: absolute;
+      top: 150px;
+      left: 450px;
+    }
+
+    &#think-word {
+      position: absolute;
+      top: 350px;
+      left: 75px;
+    }
+
+    &#own-word {
+      position: absolute;
+      top: 400px;
+      left: 400px;
+    }
+  }
+
+  .inspiration-image {
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
+  }
+}
+
+.update-form-container {
+  @include column(8, true);
+  background: #fff;
+  padding: 10px 0; 
+
+  .brand-info {
+    @include column(8, true);
+    margin-bottom: 10px;
+
+    .brand-name {
+      color: #3B5998;
+      font-family: "Lucida Grande", sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .brand-logo-container {
+      @include column(2);
+
+      background: #fff;
+      border: 1px solid #ccc;
+      position: relative;
+
+      &:before {
+        @include single-box-shadow(#ddd, 0px, 0px, 10px, 1px, true);
+        
+        content: "";
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+
+      .brand-logo {
+        @include column(2);
+      }
+    }
+
+  }
+
+  .update-form {
+    input[type=text], textarea {
+      @include box-sizing(border-box);
+
+      border: 1px solid rgb(189, 199, 216);
+      display: block;
+      margin: 0 0 10px;
+      width: span(8) - $blueprint-grid-margin;
+    }
+
+    .update-content {
+      height: 75px;
+    }
+
+    .update-note {
+      height: 50px;
+    }
+
+    // The upload button that "hijacks" the upload button behavior
+    .upload-button-container {
+      margin-bottom: 10px;
+      overflow: hidden;
+
+      .button {
+        float: left;
+      }
+
+      .file-path {
+        color: #000;
+        font-family: "Lucida Grande", "Helvetica", "Arial", sans-serif;
+        font-size: 0.6em;
+        font-weight: bold;
+        height: 30px;
+        line-height: 30px;
+        margin-left: 10px;
+      }
+    }
+
+    #update-upload-image-button {
+      display: none;
+    }
+  }
+
+}
+
+
+
+
+
+
+// ##############################
+// WORK IN PROGRESS LIST        #
+// ##############################
+.work-in-progress-header {
+  @include container;
+  margin-bottom: 20px;
+
+  .sorting-options {
+    @include column(24, true);
+  }
+
+  .update-search-container {
+    @include column(10);
+  }
+
+  .update-sorting-options {
+    @include column(14, true);
+    text-align: right;
+  }
+
+  select {
+    @include border-radius(0px);
+    background: transparent;
+    border: 1px solid #ccc;
+  }
+
+  .selectbox-wrapper {
+    position: relative;
+  }
+
+  .selectbox-wrapper ul {
+    background: #ccc;
+    list-style-type: none;
+    position: absolute;
+  }
+}
+
+.work-in-progress-updates {
+  @include container;
+  
+  .update-list {
+    @include column(24, true);
+    background: #333;
+    color: #706d6d;
+    font-size: 13px;
+
+    tr {
+      height: 60px;
+    }
+
+    tr td, tr th {
+      @include box-sizing(border-box);
+      border-right: 1px solid #eee;
+      padding: 5px;
+    }
+
+    tr:nth-child(even) td {
+      background: #dfdede;
+    }
+
+    tr:nth-child(odd) td {
+      background: #d1cfcf;
+    }
+
+    .list-header {
+
+      background: rgb(172,171,171); /* Old browsers */
+      background: -moz-linear-gradient(top,  rgba(172,171,171,1) 0%, rgba(166,166,166,1) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(172,171,171,1)), color-stop(100%,rgba(166,166,166,1))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  rgba(172,171,171,1) 0%,rgba(166,166,166,1) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  rgba(172,171,171,1) 0%,rgba(166,166,166,1) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  rgba(172,171,171,1) 0%,rgba(166,166,166,1) 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  rgba(172,171,171,1) 0%,rgba(166,166,166,1) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#acabab', endColorstr='#a6a6a6',GradientType=0 ); /* IE6-9 */
+
+      height: 20px;
+
+      th {
+        //@include box-shadow(#000, 0px, 10px, 10px, -12px, true, #000, 0px, -10px, 10px, -12px, true);
+        // box-shadow(#000, 0px, -10px, 10px, -12px, true);
+        @include box-shadow(0px -10px 10px -12px #333 inset, 0px 10px 10px -12px #333 inset);
+        text-align: center;
+      }
+    }
+
+    .update-id {
+      width: span(1) + $blueprint-grid-margin;
+      text-align: center;
+    }
+
+    .update-content {
+      width: span(8) + $blueprint-grid-margin;
+    }
+
+    .update-extra {
+      width: span(2) + $blueprint-grid-margin;
+    }
+
+    .update-author {
+      width: span(3) + $blueprint-grid-margin;
+    }
+
+    .update-brand {
+      width: span(3) + $blueprint-grid-margin;
+    }
+
+    .update-actions {
+      width: span(8);
+      text-align: center;
+    }
+
+    .delete-update, .edit-update, .update-to-pending, .edit-update-categories {
+      color: #706d6d;
+      display: inline-block;
+      font-weight: 400;
+      margin-left: 20px;
+      padding-top: 24px;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .edit-update { 
+      background: url("../img/icons/edit-small.png") top center no-repeat; 
+      margin-left: 0;
+    }
+    .delete-update { background: url("../img/icons/delete-small.png") top center no-repeat; }
+    .update-to-pending { background: url("../img/icons/send-small.png") top center no-repeat; }
+    .edit-update-categories { background: url("../img/icons/category-small.png") top center no-repeat; }
+
+
+  }
+
+}
+
+// ##############################
+// CREATE BRAND PAGE            #
+// ##############################
+
+.create-brand-container {
+  @include container;
+}
+
+// Hide the iframe the form submits to
+#create-brand-target {
+  position: absolute;
+  left: -9999px;
+}
+
+
+// ##############################
+// SESSION START PAGE           #
+// ##############################
+.session-start-container {
+  //@include container;
+  width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+
+
+
+// ##############################
+// CREATE PERSONA PAGE          #
+// ##############################
+.create-persona-container {
+  @include container;
+  // background: url("../img/grid.png");
+}
+
+#create-persona-form {
+  color: #000;
+
+  label {
+    display: block;
+    font-size: 0.7em;
+    margin-bottom: 3px;
+  }
+
+  input,
+  textarea {
+    margin: 0;
+    width: 100%;
+  }
+
+  input[type=text], textarea {
+    @include box-sizing(border-box);
+    @include single-box-shadow(#666, 0, 0, 10px, -4px, true);
+    border: 1px solid #999;
+    padding: 5px;
+    width: 100%;
+
+    &:focus {
+      border: 1px solid #333;
+      outline: none;
+    }
+  }
+
+
+
+  .create-persona-form-col-1 {
+    @include column(7);
+
+    // input[type=text], textarea {
+    //   @include box-sizing(border-box);
+    //   @include single-box-shadow(#666, 0, 0, 10px, -4px, true);
+    //   border: 1px solid #999;
+    //   padding: 5px;
+    //   width: 100%;
+
+    //   &:focus {
+    //     border: 1px solid #333;
+    //     outline: none;
+    //   }
+    // }
+
+    .create-persona-persona-information {
+      border-bottom: 1px solid #fff;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    .create-new-status-update {
+      color: #000;
+      display: block;
+      font-size: 0.7em;
+      font-style: italic;
+    }
+
+    .create-persona-statusupdates-headline {
+      font-size: 0.95em;
+      margin-bottom: 5px;
+    }
+  }
+
+  .create-persona-form-col-2 {
+    @include column(7);
+    @include append(1);
+    @include prepend(1);
+
+    .create-persona-brand {
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    textarea {
+      margin-bottom: 30px;
+    }
+
+    // Word lists
+    #i-say-words-list,
+    #i-do-words-list,
+    #i-think-words-list,
+    #i-own-words-list, {
+      @include border-radius(0);
+      @include single-box-shadow(#666, 0, 0, 10px, -4px, true);
+      border: 1px solid #999;
+      margin-bottom: 30px;
+      list-style-type: none;
+      overflow: hidden;
+      padding: 0px 1px 1px;
+
+      .tagit-choice {
+        background: #d5d4d4;
+        display: inline-block;
+        float: left;
+        font-size: 0.7em;
+        height: 15px;
+        margin: 3px 2px 1px;
+        padding-right: 5px;
+        width: auto;
+
+        .tagit-label {
+          display: inline-block;
+          float: right;
+          line-height: 15px;
+        }
+
+        .tagit-close {
+          display: inline-block;
+        }
+
+        // Hide the text close
+        .tagit-close .text-icon {
+          display: none;
+        }
+      }
+      
+      // The tag input box
+      .tagit-new  {
+        display: inline-block;
+
+        input {
+          @include box-sizing(border-box);
+          border: none;
+          font-size: 0.7em;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+
+  .create-persona-form-col-3 {
+    @include column(8, true);
+  }
+}
+
+
+// ##############################
+// LOGIN PAGE                   #
+// ##############################
+body.mobile {
+  background: #000;
+}
+
+
+
+
+
+
+
+
+
+
+
