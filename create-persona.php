@@ -9,6 +9,7 @@ Template Name: Create Persona
     die("You don't have permission to create personas");
   }
 
+  // Only do something if a persona name has been set
   if(isset($_POST['persona-name']))
     $persona_name = $_POST['persona-name'];
   else
@@ -20,6 +21,8 @@ Template Name: Create Persona
     $persona['updates']   = $_POST['create-persona-status-update'];
     $persona['brand-id']  = $_POST['create-persona-brand'];
 
+    // Insert the new persona, retrieve the ID of the newly
+    // created persona
     $persona_id = wp_insert_post(array(
       'post_title'  => $persona['name'],
       'post_type'   => 'pw_person'
@@ -30,41 +33,33 @@ Template Name: Create Persona
     add_post_meta($persona_id, 'pw_person_brand', $persona['brand-id']);
 
 
-
     // Add I say words
-    if(isset($_POST['i-say-words'])) {
+    if(isset($_POST['i-say-words']) && $_POST['i-say-words']) {
       $i_say_words = explode(",", $_POST['i-say-words']);
       pw_add_terms($persona_id, $i_say_words, 'pw_person-i-say-words');
     }
 
     // Add I do words
-    if(isset($_POST['i-do-words'])) {
+    if(isset($_POST['i-do-words']) && $_POST['i-say-words']) {
       $i_do_words = explode(",", $_POST['i-do-words']);
       pw_add_terms($persona_id, $i_do_words, 'pw_person-i-do-words');
     }
 
     // Add I think words
-    if(isset($_POST['i-think-words'])) {
+    if(isset($_POST['i-think-words']) && $_POST['i-say-words']) {
       $i_think_words = explode(",", $_POST['i-think-words']);
       pw_add_terms($persona_id, $i_think_words, 'pw_person-i-think-words');
     }
 
     // Add I own words
-    if(isset($_POST['i-own-words'])) {
+    if(isset($_POST['i-own-words']) && $_POST['i-say-words']) {
       $i_own_words = explode(",", $_POST['i-own-words']);
       pw_add_terms($persona_id, $i_own_words, 'pw_person-i-owns-words');
     }    
 
-    // Insert terms
-    // $i_say_words    = $_POST['i-say-words'];
-    // $i_do_words     = $_POST['i-do-words'];
-    // $i_think_words  = $_POST['i-think-words'];
-    // $i_own_words    = $_POST['i-own-words'];
+    echo 'Here I am...'; 
 
-    // wp_set_object_terms($persona_id, $i_say_words, 'pw_person-i-say-words', true);
-    // wp_set_object_terms($persona_id, $i_do_words, 'pw_person-i-do-words', true);
-    // wp_set_object_terms($persona_id, $i_think_words, 'pw_person-i-think-words', true);
-    // wp_set_object_terms($persona_id, $i_own_words, 'pw_person-i-own-words', true);
+    print_r($_FILES);
 
     // This is the file loop. Adds the personas image
     if($_FILES) {
