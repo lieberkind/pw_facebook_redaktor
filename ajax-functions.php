@@ -11,6 +11,24 @@ function addUpdateTerm() {
 }
 add_action('wp_ajax_addUpdateTerm', 'addUpdateTerm');
 
+function getBrandDna() {
+  $brand_id = $_POST['brandId'];
+
+  $pure_terms     = wp_get_post_terms($brand_id, 'pw_brand-pure-words', array('fields' => 'names'));
+  $social_terms   = wp_get_post_terms($brand_id, 'pw_brand-social-words', array('fields' => 'names'));
+  $traffic_terms  = wp_get_post_terms($brand_id, 'pw_brand-traffic-words', array('fields' => 'names'));
+  $topical_terms  = wp_get_post_terms($brand_id, 'pw_brand-topcial-words', array('fields' => 'names'));
+
+  $res['pure']    = $pure_terms;
+  $res['social']  = $social_terms;
+  $res['traffic'] = $traffic_terms;
+  $res['topical'] = $topical_terms;
+
+  echo json_encode($res);
+  die();
+}
+add_action('wp_ajax_getBrandDna', 'getBrandDna');
+
 
 function setUpdateTerms() {
   $update_id = $_POST['update_id'];
@@ -36,11 +54,7 @@ function getUpdateTerms() {
   $update_terms = wp_get_post_terms($update_id, 'pw_update-update-categories', array('fields' => 'ids'));
 
   foreach ($terms as $key => $term) {
-    if(in_array($term->term_id, $update_terms)) {
-      $terms[$key]->checked = true;
-    } else {
-      $temrs[$key]->checked = false;
-    }
+    $terms[$key]->checked = in_array($term->term_id, $update_terms);
   }
 
   echo json_encode($terms);
@@ -102,6 +116,56 @@ function updateToPending() {
   die();
 }
 add_action('wp_ajax_updateToPending', 'updateToPending');
+
+function updateToPublish() {
+  $update_id = $_POST['update_id'];
+ 
+  $update = array();
+  $update['ID']           = $update_id;
+  $update['post_status']  = 'publish';
+
+  $update_response = wp_update_post($update);
+
+  $response = array();
+
+  if($update_response == $update_id) {
+    $response['status'] = 1; 
+    $response['msg']    = "Post was successfully published";
+  } else {
+    $response['status'] = 0;
+    $response['msg']    = "Something went wrong. Try again!";
+  }
+
+  echo json_encode($response);
+
+  die();
+}
+add_action('wp_ajax_updateToPublish', 'updateToPublish');
+
+function updateToDraft() {
+  $update_id = $_POST['update_id'];
+ 
+  $update = array();
+  $update['ID']           = $update_id;
+  $update['post_status']  = 'draft';
+
+  $update_response = wp_update_post($update);
+
+  $response = array();
+
+  if($update_response == $update_id) {
+    $response['status'] = 1; 
+    $response['msg']    = "Post was denied";
+  } else {
+    $response['status'] = 0;
+    $response['msg']    = "Something went wrong. Try again!";
+  }
+
+  echo json_encode($response);
+
+  die();
+}
+add_action('wp_ajax_updateToDraft', 'updateToDraft');
 
 
 function postUpdate() {

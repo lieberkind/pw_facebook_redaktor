@@ -18,7 +18,7 @@
 
   if(count($brand_posts) > 0) {
     foreach($brand_posts as $key => $brand) {
-      if(pw_currentusercan("read", "brand", $brand->ID)) {
+      if(pw_currentusercan("create", "update", $brand->ID)) {
         $brands[$brand->ID] = $brand->post_title;
       }
     }
@@ -26,19 +26,20 @@
 ?>
 
 <div class="session-start-container">
-  <h2 class="page-title">Søg efter opdateringsinspiration</h2>
+  <h2 class="page-title">Search for update inspiration</h2>
   <form method="POST">
+
     <select name="brand">
       <?php foreach($brands as $key => $brand): ?>
         <option value="<?= $key; ?>"><?= $brand; ?></option>
       <?php endforeach; ?>
     </select>
 
-    <select name="update-type">
+<!--     <select name="update-type">
       <option value="brand">Brand Update</option>
       <option value="social">Social Update</option>
       <option value="traffic">Traffic Update</option>
-    </select>
+    </select> -->
 
     <input type="submit" value="Start session!">
   </form>

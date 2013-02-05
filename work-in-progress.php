@@ -12,28 +12,40 @@ Template Name: Work in Progress
 /* LIVE SEARCH */
 jQuery(document).ready(function() {
 
-  jQuery("#update-search").keyup(function() {
 
-    var filter = jQuery(this).val(), count = 0;
+  /* Connect the tableSort function to the keyup event */
+  (function($) {
+    $("#update-search").keyup(searchTable);
+  })(jQuery);
 
-    var filter_regexp = new RegExp(filter, "i");
+  (function($) {
+    // This could be improved by matching on brand-id instead of name.
+    // To realize this, a custom data-attribute could be added on every
+    // row of the update table, and the select-box holding the brands
+    // could have brand id's as values instead of names
+    $("#sort-updates").click(function() {
+      var form_data = $('#update-sorting-options').serializeArray();
+      var brand_cat = form_data[0]['value'];
+      var brand_name = form_data[1]['value'];
 
-    jQuery("#update-list .update-id").each(function() {
+      $("#update-list .row").each(function() {
+        var $cell = $(this);
+        var $brand = $('.update-brand', $cell);
+        var $update_cats = $('.update-categories', $cell);
 
-      // If the list item does not contain the text phrase fade it out
-      if (jQuery(this).text().search(filter_regexp) < 0) {
-        if(jQuery(this).siblings(".update-content").text().search(filter_regexp) < 0) {
-          jQuery(this).parents("tr").hide();
+        var hide = ($update_cats.text().search(brand_cat) < 0);
+        var hide2 = ($brand.text().search(brand_name) < 0);
+
+        if(hide || hide2) {
+          $cell.hide();
         } else {
-          jQuery(this).parents("tr").show();
+          $cell.show();
         }
-      } else {
-        jQuery(this).parents("tr").show();
-      }
+      });
 
     });
+  })(jQuery);
 
-  })
 });
 </script>
 
@@ -196,7 +208,9 @@ var DELETEDIALOG = (function() {
 
     if(response > 0) {
       _dialog.dialog('close');
-      jQuery("td#" + _updateID).parents("tr").fadeOut();
+      jQuery("td#" + _updateID).parents("tr").fadeOut(function() {
+        jQuery(this).remove();
+      });
     } else {
       alert('Something went wrong, please try again.');
       _dialog.dialog('close');
@@ -349,6 +363,7 @@ jQuery(document).ready(function() {
   //   }
   // });
 
+  jQuery(".fancybox").fancybox();
 
 
   jQuery('#edit-update-categories').dialog({
@@ -376,34 +391,9 @@ jQuery(document).ready(function() {
 
 <?php 
 
-// Find out how to use this shit!
-
-// $update_args2 = array(
-//   'post_type'   => 'pw_update',
-//   'meta_key'    => 'pw_update_brand',
-//   'meta_value'  => 24,
-//   'post_status' => 'draft',
-//   'tax_query'   => array(
-//     array(
-//       'taxonomy'  => 'pw_update_update-categories',
-//       'field'     => 'id',
-//       'terms'     => 23
-//     )
-//   )
-// );
-
-  // $updates2 = new WP_Query($update_args2);
 
 
-  // echo '<pre>';
-  // print_r($updates2);
-  // echo '</pre>';
-
-?>
-
-<?php 
-
-  // Get updates with related content
+  //Get updates with related content
   $query_string =
   'SELECT 
     posts.ID AS ID,
@@ -423,82 +413,94 @@ jQuery(document).ready(function() {
     AND posts.ID = postmeta_3.post_id
     AND postmeta_3.meta_key = "pw_update_brand"
     AND posts.post_status = "draft"
-    AND postmeta.meta_key = "pw_update_update"';
+    AND postmeta.meta_key = "pw_update_update"
+  ORDER BY post_date DESC';
   
   $updates = $wpdb->get_results($query_string);
 
+  $q_args = array(
+    'post_type'       => 'pw_update',
+    'post_status'     => 'draft',
+    'posts_per_page'  => -1
+  );
 
-  // foreach ($updates as $key => $update) {
-  //   $terms = wp_get_post_terms($update->ID, 'pw_update-update-categories');
-  //   // echo $key;
-  //   //print_r($terms);
+  $my_q = new WP_Query($q_args);
 
-  //   $updates[$key]->terms = $terms;
-  // }
-
-  // echo '<pre>';
-  // print_r($updates);
-  // echo '</pre>';
 
   // Fetch all the brands for sorting options
   $brands = get_posts(array(
     'post_type'   => 'pw_brand',
-    'numberposts' => -1
+    'numberposts' => -1,
+    'orderby'     => 'name',
+    'order'       => 'ASC'
   ));
 
   // Fetch all the update categories
   $update_cats = get_terms('pw_update-update-categories', array(
-    'hide_empty' => 0
+    'hide_empty'  => 0,
+    'fields'      => 'names',
+    'orderby'     => 'name',
+    'order'       => 'ASC'
   ));
 
-  //print_r($update_cats);
-?>
+  //echo '<pre style="color: black;">';
+  //  print_r($updates);
+  //echo '</pre>';
 
+  print_r($my_q->posts);
+?>
 
 <header class="work-in-progress-header">
   <h2 class="page-title">Work in Progress</h2> 
-<!--   <a href="#">Feed view</a>
-  <a href="#">List view</a> -->
   <div class="sorting-options">
     <div class="update-search-container">
-      <input type="text" class="update-search" id="update-search">
+      <input type="text" class="update-search" id="update-search" placeholder="Search for update text or ID">
     </div>
     <form class="update-sorting-options" id="update-sorting-options">
+
+      <select class="update-category-select" name="cat-name">
+        <option value="">All categories</option>
+        <?php foreach ($update_cats as $key => $uc): ?>
+          <option value="<?= $uc ?>"><?= $uc ?></option>
+        <?php endforeach ?>
+      </select>
+
       <select class="update-brand-select" name="brand-id">
+        <option value="">All brands</option>
         <?php foreach($brands as $key => $brand): ?>
           <?php if(pw_currentusercan("read", "update", $brand->ID)): ?>
-            <option value="<?= $brand->ID; ?>"><?= $brand->post_title; ?></option>
+            <option value="<?= $brand->post_title; ?>"><?= $brand->post_title; ?></option>
           <?php endif; ?>
         <?php endforeach; ?>
       </select>
-      <select class="update-category-select" name="update-category">
-        <option value="all">Get all categories</option>
-        <?php foreach($update_cats as $key => $update_cat): ?>
-          <option value="<?= $update_cat->term_id; ?>"><?= $update_cat->name; ?></option>
-        <?php endforeach; ?>
-      </select>
-      <input type="button" value="Sort" onclick="sortUpdates('<?= bloginfo('url'); ?>', '#update-sorting-options')">
+      
+      <input type="button" value="Sort" id="sort-updates">
     </form>
   </div>
 </header>
 
 <section class="work-in-progress-updates">
   <table class="update-list list-view" id="update-list">
-    <tr class="row list-header">
-      <th class="update-id">ID</th>
-      <th class="update-content">Update</th>
-      <th class="update-extra">Image</th>
-      <th class="update-author">Author</th>
-      <th class="update-brand">Brand</th>
-      <th class="update-actions">Actions</th>
+    <tr class="list-header">
+      <th class="update-id-header">ID</th>
+      <th class="update-content-header">Update</th>
+      <th class="update-note-header">Note</th>
+      <th class="update-extra-header">Image</th>
+      <th class="update-author-header">Author</th>
+      <th class="update-brand-header">Brand</th>
+      <th class="update-actions-header">Actions</th>
     </tr>
 
     <?php foreach($updates as $key => $update): ?>
+
       <?php
         // If the user can't access the brand, jump over this iteration
         if(!pw_currentusercan("read", "update", $update->update_brand_id)) {
           continue;
         }
+
+        // Get update categories
+        $update_categories = wp_get_post_terms($update->ID, 'pw_update-update-categories', array('fields' => 'names'));
 
         // Get the attached image, if there is one.
         $attachment_id = get_post_meta($update->ID, 'pw_update_image', true);
@@ -508,27 +510,33 @@ jQuery(document).ready(function() {
       <tr class="row">
         <td class="update-id searchable"><?= $update->ID; ?></td>
         <td class="update-content searchable"><?= $update->update_content; ?></td>
+        <td class="update-note">
+          <?php if ($update->update_link): ?>
+            <?= $update->update_link; ?>
+          <?php else: ?>
+            <span class="no-content">No note</span>
+          <?php endif; ?>
+        </td>
         <td class="update-extra">
           <input type="hidden" value="<?= $update->update_link; ?>" class="update-link">
           <?php if($attachment_url): ?>
-            <a href="#facebook-preview-<?= $update->ID; ?>" class="fancybox">
+            <a href="<?= get_permalink($update->ID); ?>#status-update" class="fancybox status-update-link">
               <img src="<?= $attachment_url; ?>" width="50px">
             </a>
-            <div style="display: none;">
-              <div class="facebook-preview" id="facebook-preview-<?= $update->ID; ?>">
-                <div class="facebook-preview-content">
-                  <span class="facebook-preview-name"><?= get_the_title($update->update_brand_id); ?> </span>
-                  <p class="facebook-preview-update-content"><?= $update->update_content; ?></p>
-                  <img src="<?= $attachment_url; ?>" class="facebook-preview-update-image" />
-                </div>
-              </div>
-            </div>
-
-            </div>
+          <?php else: ?>
+            <a href="<?= get_permalink($update->ID); ?>#status-update" class="fancybox status-update-link">
+              <span class="no-content">No image</span>
+            </a>
           <?php endif; ?>
+
         </td>
         <td class="update-author"><?= the_author_meta('user_nicename', $update->update_author); ?></td>
         <td class="update-brand"><?= get_the_title($update->update_brand_id); ?></td>
+        <td class="update-categories" style="display: none;">
+          <?php foreach ($update_categories as $key => $uc): ?>
+            <?= $uc; ?>
+          <?php endforeach ?>
+        </td>
         <td class="update-actions" id="<?= $update->ID; ?>">
           <a href="#" class="edit-update">Edit</a>
           <a href="#" class="delete-update">Delete</a>
@@ -547,9 +555,6 @@ jQuery(document).ready(function() {
   -->
   <div id="edit-update-dialog" style="display: none">
     <form>
-<!--       <input type="hidden" name="update-id">
-      <textarea name="update-content"></textarea>
-      <input type="text" name="update-link">  -->
     </form>
   </div>
 

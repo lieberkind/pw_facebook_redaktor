@@ -48,34 +48,27 @@
   }
 ?>
 
-<script type="text/javascript">
-  jQuery(document).ready(function() {
-    jQuery('#colorpicker').farbtastic('#color');
-    jQuery('#colorpicker-2').farbtastic('#color-2');
-    jQuery('#colorpicker-3').farbtastic('#color-3');
-
-  });
-</script>
-
 <div class="create-brand-container">
   <h2 class="page-title"><?php the_title(); ?></h2>
   <form id="create-brand-form" method="POST" enctype="multipart/form-data" target="create-brand-target">
     <div class="brand-information">
-        <input type="text" name="brand-name" placeholder="Brand navn">
-        <input type="text" name="brand-facebook-page" placeholder="Facebook side">
-        <input type="text" name="brand-twitter-page" placeholder="Twitter">
-        <input type="text" name="brand-dna-1" placeholder="Brand DNA 1">
-        <textarea type="text" name="brand-dna-1-description" placeholder="Beskrivelse af DNA 1"></textarea>
-        <input type="text" name="brand-dna-2" placeholder="Brand DNA 2">
-        <textarea type="text" name="brand-dna-2-description" placeholder="Beskrivelse af DNA 2"></textarea>
-        <input type="text" name="brand-dna-3" placeholder="Brand DNA 3">
-        <textarea type="text" name="brand-dna-3-description" placeholder="Beskrivelse af DNA 3"></textarea>
-        <input type="text" name="brand-dna-4" placeholder="Brand DNA 4">
-        <textarea type="text" name="brand-dna-4-description" placeholder="Beskrivelse af DNA 4"></textarea>
+      <input type="text" name="brand-name" placeholder="Brand navn">
+      <input type="text" name="brand-facebook-page" placeholder="Facebook side">
+      <input type="text" name="brand-twitter-page" placeholder="Twitter">
+    </div>
+    <div class="brand-dna">
+      <input type="text" name="brand-dna-1" placeholder="Brand DNA 1">
+      <textarea type="text" name="brand-dna-1-description" placeholder="Beskrivelse af DNA 1"></textarea>
+      <input type="text" name="brand-dna-2" placeholder="Brand DNA 2">
+      <textarea type="text" name="brand-dna-2-description" placeholder="Beskrivelse af DNA 2"></textarea>
+      <input type="text" name="brand-dna-3" placeholder="Brand DNA 3">
+      <textarea type="text" name="brand-dna-3-description" placeholder="Beskrivelse af DNA 3"></textarea>
+      <input type="text" name="brand-dna-4" placeholder="Brand DNA 4">
+      <textarea type="text" name="brand-dna-4-description" placeholder="Beskrivelse af DNA 4"></textarea>
     </div>
 
     <div class="brand-visual">
-      <input type="file" name="lala">
+      <input type="file" name="lala"> <!-- Change the name of this field  -->
     </div>
 
     <input type="submit" id="create-form">

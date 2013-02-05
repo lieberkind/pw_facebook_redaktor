@@ -2,7 +2,7 @@
 /**
 * Check if new update
 **/
-if($_POST['update-content']) {
+if(isset($_POST['update-content'])) {
   if(pw_currentusercan("create", "update", $brand_id)) {
     // Get the brand name
     $brand_name = get_the_title($brand_id);

@@ -19,6 +19,9 @@ $desktop-view: 1240px;
 @import "compass/css3/images";
 @import "compass/css3/transition";
 
+/* CONSTANTS */
+$faceboox-link-blue: #3B5998; 
+
 @font-face {
     font-family: 'maven_pro_light_100regular';
     src: url('../fonts/mavenprolight-100-webfont.eot');
@@ -66,6 +69,7 @@ body {
   font-family: "Verdana", sans-serif;
   font-size: 16px;
   height: 100%;
+  padding-bottom: 20px;
 }
 
 .page-title {
@@ -124,6 +128,27 @@ body {
   }
 }
 
+.ui-dialog {
+  font-size: 0.8em !important;
+}
+
+.access-error {
+  color: #000;
+}
+
+.text-input-field {
+  @include box-sizing(border-box);
+  @include single-box-shadow(#666, 0, 0, 10px, -4px, true);
+  border: 1px solid #999;
+  padding: 5px;
+  //width: 100%;
+
+  &:focus {
+    border: 1px solid #333;
+    outline: none;
+  }
+}
+
 .system-message {
   //@include border-radius(2px);
   //@include single-box-shadow(#ccc, 0, 0, 7px, 0px);
@@ -159,6 +184,10 @@ body {
     padding-left: 26px;
   }
 
+}
+
+.hide {
+  display: none;
 }
 
 
@@ -296,6 +325,27 @@ body {
     padding: 5px;
   }
 
+  .brand-dna-terms-container {
+    text-align: left;
+    font-size: 12px;
+  }
+
+  .terms-list-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 2px;
+    margin-top: 10px;
+    &:first-child { margin-top: 0; }
+  }
+
+  .dna-terms-list {
+    list-style-type: none;
+  }
+
+  .dna-list-term {
+    display: inline-block;
+  }
+
   .brand-persona { 
     @include box-sizing(border-box);
     @include column(6, true);
@@ -406,7 +456,7 @@ body {
 
   .inspiration-word {
     @include border-radius(2px);
-    background: rgba(50, 50, 50, 0.7);
+    background: rgba(50, 50, 50, 0.8);
     font-size: 12px;
     padding: 5px 10px;
     position: absolute;
@@ -416,28 +466,41 @@ body {
       cursor: move;
     }
 
+    &:before {
+      color: #aaa;
+      font-size: 0.8em;
+    }
+
     &#say-word {
       position: absolute;
       top: 100px;
       left: 100px;
+
+      &:before { content: 'say | '; }
     }
 
     &#do-word {
       position: absolute;
       top: 150px;
       left: 450px;
+
+      &:before { content: 'do | '; }
     }
 
     &#think-word {
       position: absolute;
       top: 350px;
       left: 75px;
+      
+      &:before { content: 'think | '; }
     }
 
     &#own-word {
       position: absolute;
       top: 400px;
       left: 400px;
+      
+      &:before { content: 'own | '; }      
     }
   }
 
@@ -554,6 +617,11 @@ body {
 
   .update-search-container {
     @include column(10);
+
+    .update-search {
+      @extend .text-input-field;
+      @include column(6);
+    }
   }
 
   .update-sorting-options {
@@ -586,6 +654,7 @@ body {
     background: #333;
     color: #706d6d;
     font-size: 13px;
+    margin-bottom: 20px;
 
     tr {
       height: 60px;
@@ -626,33 +695,57 @@ body {
       }
     }
 
-    .update-id {
+    .update-id,
+    .update-id-header {
       width: span(1) + $blueprint-grid-margin;
       text-align: center;
     }
 
-    .update-content {
-      width: span(8) + $blueprint-grid-margin;
+    .update-content,
+    .update-content-header {
+      width: span(6) + $blueprint-grid-margin;
     }
 
-    .update-extra {
+    .update-note,
+    .update-note-header {
+      width: span(4) + $blueprint-grid-margin;
+    }
+
+    .update-extra,
+    .update-extra-header {
       width: span(2) + $blueprint-grid-margin;
+      text-align: center;
+
     }
 
-    .update-author {
-      width: span(3) + $blueprint-grid-margin;
+    .no-content {
+      color: #AAA;
+      font-size: 0.9em;
     }
 
-    .update-brand {
-      width: span(3) + $blueprint-grid-margin;
+    .status-update-link {
+      text-decoration: none;
     }
 
-    .update-actions {
-      width: span(8);
+    .update-author,
+    .update-author-header {
+      width: span(2) + $blueprint-grid-margin;
       text-align: center;
     }
 
-    .delete-update, .edit-update, .update-to-pending, .edit-update-categories {
+    .update-brand,
+    .update-brand-header {
+      width: span(2) + $blueprint-grid-margin;
+      text-align: center;
+    }
+
+    .update-actions,
+    .update-actions-header {
+      width: span(7);
+      text-align: center;
+    }
+
+    .delete-update, .edit-update, .update-to-pending, .edit-update-categories, .update-to-draft {
       color: #706d6d;
       display: inline-block;
       font-weight: 400;
@@ -666,11 +759,10 @@ body {
       background: url("../img/icons/edit-small.png") top center no-repeat; 
       margin-left: 0;
     }
-    .delete-update { background: url("../img/icons/delete-small.png") top center no-repeat; }
-    .update-to-pending { background: url("../img/icons/send-small.png") top center no-repeat; }
+    .delete-update          { background: url("../img/icons/delete-small.png") top center no-repeat; }
+    .update-to-pending      { background: url("../img/icons/send-small.png") top center no-repeat; }
+    .update-to-draft        { background: url("../img/icons/deny-small.png") top center no-repeat; }
     .edit-update-categories { background: url("../img/icons/category-small.png") top center no-repeat; }
-
-
   }
 
 }
@@ -681,6 +773,21 @@ body {
 
 .create-brand-container {
   @include container;
+
+  input[type=text] {
+    @extend .text-input-field;
+    width: 100%;
+  }
+
+  .brand-information {
+    @include column(7);
+  }
+
+  .brand-dna {
+    @include column(7);
+    @include append(1);
+    @include prepend(1);
+  }
 }
 
 // Hide the iframe the form submits to
@@ -721,26 +828,16 @@ body {
     margin-bottom: 3px;
   }
 
-  input,
+  input[type=text],
   textarea {
+    @extend .text-input-field;
     margin: 0;
     width: 100%;
   }
 
-  input[type=text], textarea {
-    @include box-sizing(border-box);
-    @include single-box-shadow(#666, 0, 0, 10px, -4px, true);
-    border: 1px solid #999;
-    padding: 5px;
+  input[type=submit] {
     width: 100%;
-
-    &:focus {
-      border: 1px solid #333;
-      outline: none;
-    }
   }
-
-
 
   .create-persona-form-col-1 {
     @include column(7);
@@ -849,6 +946,39 @@ body {
 
   .create-persona-form-col-3 {
     @include column(8, true);
+  }
+}
+
+// ##############################
+// SINGLE UPDATE                #
+// ##############################
+.status-update-container {
+  background: #fff;
+  color: #333;
+  font-family: "Lucida Grande", sans-serif;
+  font-size: 13px;
+  line-height: 17px;
+  width: span(10);
+
+  .brand-thumbnail {
+    float: left;
+    height: 50px;
+    width: 50px;
+  }
+
+  .status-update {
+    margin-left: 60px;
+  }
+
+  .brand-name {
+    color: $faceboox-link-blue;
+    font-weight: bold;
+    padding-bottom: 4px;
+  }
+
+  .update-image {
+    margin-top: 15px;
+    width: 100%;
   }
 }
 

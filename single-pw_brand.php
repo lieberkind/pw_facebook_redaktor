@@ -8,18 +8,25 @@ if(!pw_currentusercan("read", "brand", $brand_id)) {
 }
 
 // Get the update type
-$update_type = $_GET['update-type'];
+if(isset($_GET['update-type'])) {
+  $update_type = $_GET['update-type'];
+}
 
 // Fetch all brand meta and the brand logo
 $brand_meta = get_post_custom($brand_id);
 $brand_logo = rwmb_meta('pw_brand_logo', array('type' => 'image'), $brand_id);
+
+// Fetch DNA terms
+$pure_terms     = wp_get_post_terms($brand_id, 'pw_brand-pure-words', array('fields' => 'names'));
+$social_terms   = wp_get_post_terms($brand_id, 'pw_brand-social-words', array('fields' => 'names'));
+$traffic_terms  = wp_get_post_terms($brand_id, 'pw_brand-traffic-words', array('fields' => 'names'));
+$topical_terms  = wp_get_post_terms($brand_id, 'pw_brand-topcial-words', array('fields' => 'names'));
 
 include('insertupdate.php');
 ?>
 
 <?php get_header(); ?>
 <?php wp_enqueue_script('single-pw_brand'); ?>
-<?php  ?>
 
 <script type="text/javascript">
   // Triggers the click event of the specified ID
@@ -113,7 +120,68 @@ include('insertupdate.php');
         <p class="more-tab">More</p>
         <div class="more-container">
           <div class="brand-dna">
-            <h3 class="brand-dna-title">Brand DNA</h3>
+            <h3 class="brand-dna-container-title">Brand DNA</h3>
+            <div class="brand-dna-terms-container">
+              
+              <h4 class="terms-list-title">Pure</h4>
+              <ul class="dna-terms-list">
+                <?php foreach ($pure_terms as $key => $term): ?>
+
+                  <li class="dna-list-term">
+                    <?php if($key == count($pure_terms) - 1): ?>
+                      <?= $term ?>
+                    <?php else: ?>
+                      <?= $term ?>,
+                    <?php endif; ?>
+                  </li>
+
+                <?php endforeach ?>
+              </ul>
+
+              <h4 class="terms-list-title">Social terms</h4>
+              <ul class="dna-terms-list">
+                <?php foreach ($social_terms as $key => $term): ?>
+
+                  <li class="dna-list-term">
+                    <?php if($key == count($social_terms) - 1): ?>
+                      <?= $term ?>
+                    <?php else: ?>
+                      <?= $term ?>,
+                    <?php endif; ?>
+                  </li>
+
+                <?php endforeach ?>
+              </ul>
+
+              <h4 class="terms-list-title">Topical terms</h4>
+              <ul class="dna-terms-list">
+                <?php foreach ($topical_terms as $key => $term): ?>
+
+                  <li class="dna-list-term">
+                    <?php if($key == count($topical_terms) - 1): ?>
+                      <?= $term ?>
+                    <?php else: ?>
+                      <?= $term ?>,
+                    <?php endif; ?>
+                  </li>
+
+                <?php endforeach ?>
+              </ul>
+
+              <h4 class="terms-list-title">Traffic terms</h4>
+              <ul class="dna-terms-list">
+                <?php foreach ($traffic_terms as $key => $term): ?>
+                  <li class="dna-list-term">
+                    <?php if($key == count($traffic_terms) - 1): ?>
+                      <?= $term ?>
+                    <?php else: ?>
+                      <?= $term ?>,
+                    <?php endif; ?>
+                  </li>
+                <?php endforeach ?>
+              </ul>
+
+            </div>
           </div>
           <div class="brand-persona" id="brand-persona">
             <h3 class="brand-persona-title">Persona</h3>
@@ -124,6 +192,7 @@ include('insertupdate.php');
     </div>
 
     <div class="update-form-container" id="update-form-container">
+
       <div class="brand-info">
         <!-- Ugly as hell! Should be refactored -->
         <div class="brand-logo-container">
@@ -133,25 +202,30 @@ include('insertupdate.php');
         </div>
         <p class="brand-name"><?= get_the_title($brand_id); ?></p>
       </div>
+
       <form class="update-form" method="POST" name="new_update" id="new_update" enctype="multipart/form-data" target="upload_target">
+
         <textarea name="update-content" class="update-content" placeholder="Skriv statusopdatering her..."></textarea>
         <textarea placeholder="Evt. note til statusopdateringen..." type="text" name="update-link" class="update-note"></textarea>
+        
         <div class="upload-button-container" id="brand-file-upload-container">
           <button class="button" id="upload-image-button-visible">Billedupload</button>
           <span class="file-path"></span>
         </div>
+        
         <input type="file" name="update-image" class="update-upload-image" id="update-upload-image-button">
         <input type="submit" value="Gem update" class="button submit-update">
 
         <!-- This iframe shoud be hidden with CSS -->
         <iframe src="" id="upload_target" name="upload_target" style="display: none;"></iframe>
       </form>
+
     </div>
   </div>
 </div>
 
-<div id="qunit"></div>
-<div id="qunit-fixture"></div>
+<!-- <div id="qunit"></div>
+<div id="qunit-fixture"></div> -->
 <?php get_footer(); ?> 
 
 

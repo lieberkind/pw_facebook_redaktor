@@ -189,63 +189,34 @@ function register_pw_brand_metaboxes() {
 
     'fields'  => array(
       // DNA 1
-      array(
-        'name'  => 'DNA 1 Title',
-        'id'    => $prefix . 'dna-1-title',
-        'type'  => 'text',
-        'size'  => 60
-      ),
-      array(
-        'name'  => 'DNA 1 Description',
-        'desc'  => 'A longer description for DNA 1',
-        'id'    => $prefix . 'dna-1-description',
-        'type'  => 'textarea',
-        'rows'  => 3
-      ),
 
-      // DNA 2
       array(
-        'name'  => 'DNA 2 Title',
-        'id'    => $prefix . 'dna-2-title',
+        'name'  => 'DNA: Social words',
+        'id'    => $prefix . 'dna-social',
         'type'  => 'text',
-        'size'  => 60
+        'clone' => true,
+        'size'  => 70
       ),
       array(
-        'name'  => 'DNA 2 Description',
-        'desc'  => 'A longer description for DNA 2',
-        'id'    => $prefix . 'dna-2-description',
-        'type'  => 'textarea',
-        'rows'  => 3
-      ),
-
-      // DNA 3
-      array(
-        'name'  => 'DNA 3 Title',
-        'id'    => $prefix . 'dna-3-title',
+        'name'  => 'DNA: Topical words',
+        'id'    => $prefix . 'dna-topical',
         'type'  => 'text',
-        'size'  => 60
+        'clone' => true,
+        'size'  => 70
       ),
       array(
-        'name'  => 'DNA 3 Description',
-        'desc'  => 'A longer description for DNA 3',
-        'id'    => $prefix . 'dna-3-description',
-        'type'  => 'textarea',
-        'rows'  => 3
-      ),
-
-      // DNA 4
-      array(
-        'name'  => 'DNA 3 Title',
-        'id'    => $prefix . 'dna-4-title',
+        'name'  => 'DNA: Social words',
+        'id'    => $prefix . 'dna_social',
         'type'  => 'text',
-        'size'  => 60
+        'clone' => true,
+        'size'  => 70
       ),
       array(
-        'name'  => 'DNA 3 Description',
-        'desc'  => 'A longer description for DNA 4',
-        'id'    => $prefix . 'dna-4-description',
-        'type'  => 'textarea',
-        'rows'  => 3
+        'name'  => 'DNA: Social words',
+        'id'    => $prefix . 'dna_social',
+        'type'  => 'text',
+        'clone' => true,
+        'size'  => 70
       ),
     )
   );

@@ -15,14 +15,20 @@ function load_jquery_ui() {
     $ui = $wp_scripts->query('jquery-ui-core');
  
     // tell WordPress to load the Smoothness theme from Google CDN
-// NB: as at 2012-06-14, the Google CDN stops at v1.8.18; use Microsoft's instead
-//    $url = "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery.ui.all.css";
-    $url = "https://ajax.aspnetcdn.com/ajax/jquery.ui/{$ui->ver}/themes/smoothness/jquery.ui.all.css";
+    // NB: as at 2012-06-14, the Google CDN stops at v1.8.18; use Microsoft's instead
+    // $url = "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery.ui.all.css";
+    //$url = "https://ajax.aspnetcdn.com/ajax/jquery.ui/{$ui->ver}/themes/smoothness/jquery.ui.all.css";
+    $url = get_bloginfo('template_url') . '/stylesheets/smoothness/jquery-ui-1.9.2.custom.min.css';
     wp_enqueue_style('jquery-ui-smoothness', $url, false, $ui->ver);
 }
 add_action('init', 'load_jquery_ui');
 
 
+/* Hide the admin bar from front end */
+show_admin_bar(false);
+
+
+/* Load necessary javascript */
 function pw_load_javascripts() {
   
   // Register and enqueue fancybox
@@ -76,11 +82,6 @@ function pw_load_javascripts() {
 add_action('init', 'pw_load_javascripts');
 
 /**
-Add support for featured images
-**/
-//add_theme_support('post-thumbnails', array('pw_person'));
-
-/**
 Register image sizes
 **/
 add_image_size('person-inspiration-image', '390', '290', true);
@@ -89,6 +90,7 @@ add_image_size('person-inspiration-image', '390', '290', true);
 Register navigation menus
 **/
 register_nav_menu('primary_navigation', 'Primary Navigation');
+register_nav_menu('primary_nav_admins', 'Admin Navigation');
 
 /**
 Register post types
@@ -190,14 +192,14 @@ function insert_attachment($file_handler,$post_id,$setthumb='false') {
 }
 
 
-// TODO: Find out about the taxonomies
-add_action( 'init', 'unregister_taxonomy');
-function unregister_taxonomy(){
-  global $wp_taxonomies;
-  $taxonomy = 'pw_person-i-own-words';
-  if ( taxonomy_exists( $taxonomy))
-    unset( $wp_taxonomies[$taxonomy]);
-}
+// // TODO: Find out about the taxonomies
+// add_action( 'init', 'unregister_taxonomy');
+// function unregister_taxonomy(){
+//   global $wp_taxonomies;
+//   $taxonomy = 'pw_person-i-own-words';
+//   if ( taxonomy_exists( $taxonomy))
+//     unset( $wp_taxonomies[$taxonomy]);
+// }
 
 
 function pw_currentusercan($action, $post_type = null, $brand_id = null) {
@@ -393,18 +395,6 @@ function pw_currentusercan($action, $post_type = null, $brand_id = null) {
   }
   return false;
 }
-
-
-function pw_page_logic() {
-  // global $post;
-
-  // if(is_sirgle($post->ID)) {
-  //   echo 'HEJ!!';
-  // }
-}
-
-add_action('init', 'pw_page_logic');
-
 
 
 /**

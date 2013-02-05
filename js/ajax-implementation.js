@@ -72,7 +72,61 @@ function updateToPending(siteUrl, element) {
 
       // If the update was successfully updated (lol), remove ther tr element that holds it
       if(response.status == 1) {
-        jQuery(element).parents("tr").remove();
+        jQuery(element).parents("tr").fadeOut(function() {
+          jQuery(this).remove();
+        });
+      }
+    }
+  });
+
+}
+
+function updateToPublish(siteUrl, element) {
+
+  var update_id = jQuery(element).parents("td").attr("id");
+
+  jQuery.ajax({
+    type: 'POST',
+    url     : siteUrl + '/wp-admin/admin-ajax.php',
+    data: 'action=updateToPublish&update_id=' + update_id,
+    success: function(data) {
+
+      var response = JSON.parse(data);
+
+      // Alert the response message
+      alert(response.msg);
+
+      // If the update was successfully updated (lol), remove ther tr element that holds it
+      if(response.status == 1) {
+        jQuery(element).parents("tr").fadeOut(function() {
+          jQuery(this).remove();
+        });
+      }
+    }
+  });
+
+}
+
+function updateToDraft(siteUrl, element) {
+
+  var update_id = jQuery(element).parents("td").attr("id");
+
+  jQuery.ajax({
+    type: 'POST',
+    url     : siteUrl + '/wp-admin/admin-ajax.php',
+    data: 'action=updateToDraft&update_id=' + update_id,
+    success: function(data) {
+
+      var response = JSON.parse(data);
+
+      // Alert the response message
+      alert(response.msg);
+
+      // If the update was successfully updated (lol), remove ther tr element that holds it
+      if(response.status == 1) {
+        jQuery(element).parents("tr").fadeOut(function() {
+          jQuery(this).remove();
+        });
       }
     }
   });

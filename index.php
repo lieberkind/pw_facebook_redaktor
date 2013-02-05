@@ -1,54 +1,105 @@
-<?php 
-  if($_POST['brand'] && $_POST['update-type']) {
+<?php
+  // Start a session if a brand has been set
+  if(isset($_POST['brand'])) {
     $link = get_permalink($_POST['brand']);
-    $mod_link = add_query_arg('update-type', $_POST['update-type'], $link);
-    wp_redirect($mod_link);
+    wp_redirect($link);
   }
-?>
-
-<?php 
-  if($_POST['update-content']) {
-
-    $brand = get_post($_POST['brand']);
-    $brand_name = $brand->post_title;
-
-
-    $new_update = array(
-      'post_title'    => $brand_name . ': ' . $_POST['update-content'], // Find an appropriate title. Example - "<Brand>: <update>"
-      'post_type'     => 'pw_update',
-      'post_status'   => 'publish'
-    );
-
-    // Get the new update id
-    $update_id = wp_insert_post($new_update);
-
-    // Add meta data to the new update
-    add_post_meta($update_id, 'pw_update_brand', $_POST['brand']);
-    add_post_meta($update_id, 'pw_update_update', $_POST['update-content']);
-    add_post_meta($update_id, 'pw_update_link', $_POST['update-link']);
-
-    // Upload the image. Update the meta box in the backend accordingly.
-    if($_FILES) {
-      foreach ($_FILES as $file => $array) {
-        $newupload = insert_attachment($file, $update_id);
-        add_post_meta($update_id, 'pw_update_image', $newupload);
-      }
-    }
-
-    echo 'I was called!';
-  } 
 ?>
 
 <?php get_header(); ?>
 
 <?php
-  // Are there security issues to be aware of when doing this?
-  // Should probably be done like this: http://voodoopress.com/how-to-post-from-your-front-end-with-no-plugin/
-  if($_POST['brand'] && $_POST['update-type']) {
-    //include('search-results.php');
-  } else {
-    include('session-start.php');
+  // Fetch all the brand information for use in
+  // the option field, in alphabetical order
+  $brand_posts = get_posts(array(
+    'numberposts' => -1,
+    'post_type'   => 'pw_brand',
+    'orderby'     => 'title',
+    'order'       => 'ASC'
+    )
+  );
+
+  // Get the current user id
+  $current_user = wp_get_current_user();
+
+  // Build the brand list. Only include a brand if the current user
+  // is able to create updates for that brand
+  if(count($brand_posts) > 0) {
+    foreach($brand_posts as $key => $brand) {
+      if(pw_currentusercan("create", "update", $brand->ID)) {
+        $brands[$brand->ID] = $brand->post_title;
+      }
+    }
   }
 ?>
+
+<script>
+  // Make this work
+  (function($) {
+    $(document).ready(function() {
+
+
+      $("#button").click(function(e) {
+        e.preventDefault();
+
+        // Get selected brands ID
+        var brand_id = $("#brand-id option:selected").attr('value');
+
+        var data_string = 'action=getBrandDna&brandId=' + brand_id;
+
+        $.ajax({
+          type    : 'POST',
+          url     : 'wp-admin/admin-ajax.php',
+          data    : data_string,
+          success : function(res) { 
+
+
+            dna = JSON.parse(res);
+
+
+            // var pure_dna_html = '<ul>';
+            // for(var i = 0; i < dna.pure.length; i++) {
+            //   pure_dna_html += '<li>' + dna.pure[i] + '</li>';
+            // }
+            // pure_dna_html += '</ul>';
+
+
+
+            var dna_html = '<div class="session-start-dna">';
+            for(var i = 0; i < dna.length; i++) {
+              dna_html += '<ul>';
+              for(var j = 0; j < dna[i].length; j++) {
+                dna_html += '<li>' + dna[i][j] + '</li>';
+              }
+              dna_html += '</ul>';
+            }
+            dna_html += '</div>';
+
+            alert(dna_html);
+
+
+          }
+        });
+
+      });
+    });
+  })(jQuery);
+</script>
+
+<div class="session-start-container">
+  <h2 class="page-title">Search for update inspiration</h2>
+  <form method="POST">
+
+    <select name="brand" id="brand-id">
+      <?php foreach($brands as $key => $brand): ?>
+        <option value="<?= $key; ?>"><?= $brand; ?></option>
+      <?php endforeach; ?>
+    </select>
+
+
+
+    <input type="submit" value="Start session!">
+  </form>
+</div>
 
 <?php get_footer(); ?>

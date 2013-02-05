@@ -21,8 +21,15 @@
       </div>
       <?php
 
+        $theme_location = '';
+        if(pw_currentusercan("approve")) {
+          $theme_location = 'primary_nav_admins';
+        } else {
+          $theme_location = 'primary_navigation';
+        }
+
         wp_nav_menu(array(
-          'theme_location'  => 'primary_navigation',
+          'theme_location'  => $theme_location,
           'container'       => 'nav',
           'container_class' => 'primary-navigation-container',
           'menu_class'      => 'primary-navigation' 
